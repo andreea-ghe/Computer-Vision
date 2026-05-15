@@ -1,0 +1,57 @@
+_wandb:
+    value:
+        cli_version: 0.27.0
+        e:
+            obb835k3mun8p5m5trvd9lwn5raobmho:
+                codePath: c:\Users\Andreea\Documents\comp_vision\lab4\semantic_segmentation.ipynb
+                codePathLocal: semantic_segmentation.ipynb
+                cpu_count: 12
+                cpu_count_logical: 16
+                disk:
+                    /:
+                        total: "321127444480"
+                        used: "260606881792"
+                email: gheorghe.andreea.ioana26@gmail.com
+                executable: c:\Users\Andreea\Documents\comp_vision\.venv\Scripts\python.exe
+                git:
+                    commit: ef2d12fd2490282a379fa872554891f6ccc25afe
+                    remote: https://github.com/andreea-ghe/comp-vision.git
+                host: DESKTOP-F4GTCRF
+                memory:
+                    total: "16785960960"
+                os: Windows-11-10.0.26200-SP0
+                program: c:\Users\Andreea\Documents\comp_vision\lab4\semantic_segmentation.ipynb
+                python: CPython 3.12.6
+                root: c:\Users\Andreea\Documents\comp_vision\lab4
+                startedAt: "2026-05-15T10:45:27.437189Z"
+                writerId: obb835k3mun8p5m5trvd9lwn5raobmho
+        m: []
+        python_version: 3.12.6
+        t:
+            "1":
+                - 1
+                - 41
+            "2":
+                - 1
+                - 41
+            "3":
+                - 2
+                - 13
+                - 16
+            "4": 3.12.6
+            "5": 0.27.0
+            "8":
+                - 1
+                - 3
+            "10":
+                - 20
+            "12": 0.27.0
+            "13": windows-amd64
+batch_size:
+    value: 4
+epochs:
+    value: 10
+loss:
+    value: CrossEntropy
+lr:
+    value: 0.001

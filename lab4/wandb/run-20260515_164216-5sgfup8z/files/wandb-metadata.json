@@ -1,0 +1,28 @@
+{
+  "os": "Windows-11-10.0.26200-SP0",
+  "python": "CPython 3.12.6",
+  "startedAt": "2026-05-15T13:42:16.175716Z",
+  "program": "c:\\Users\\Andreea\\Documents\\comp_vision\\lab4\\semantic_segmentation.ipynb",
+  "codePath": "c:\\Users\\Andreea\\Documents\\comp_vision\\lab4\\semantic_segmentation.ipynb",
+  "codePathLocal": "semantic_segmentation.ipynb",
+  "git": {
+    "remote": "https://github.com/andreea-ghe/comp-vision.git",
+    "commit": "ef2d12fd2490282a379fa872554891f6ccc25afe"
+  },
+  "email": "gheorghe.andreea.ioana26@gmail.com",
+  "root": "c:\\Users\\Andreea\\Documents\\comp_vision\\lab4",
+  "host": "DESKTOP-F4GTCRF",
+  "executable": "c:\\Users\\Andreea\\Documents\\comp_vision\\.venv\\Scripts\\python.exe",
+  "cpu_count": 12,
+  "cpu_count_logical": 16,
+  "disk": {
+    "/": {
+      "total": "321127444480",
+      "used": "260683767808"
+    }
+  },
+  "memory": {
+    "total": "16785960960"
+  },
+  "writerId": "7mf6lii5rpjp1xyrctqjnyctr1bcorxm"
+}
