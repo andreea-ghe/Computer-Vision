@@ -55,7 +55,7 @@ class Cifar10Classifier(nn.Module):
 
 
 
-def rmse_loss(pred):
+def rmse_loss(pred, target):
     """RMSE between logits and one-hot targets (not ideal for classification)."""
     target_onehot = torch.zeros_like(pred)
     target_onehot.scatter_(1, target.unsqueeze(1), 1.0)
@@ -140,6 +140,58 @@ def training(X_train, y_train, X_test, y_test, loss_func, lr, weight_decay):
     return train_acc, test_acc
 
 
+def build_summary_table():
+    """Pull all lab2 runs from wandb API and create a summary table."""
+    api = wandb.Api()
+    runs = api.runs(
+        "andreea-ghe-babes-bolyai-university/computer-vision",
+        filters={"group": "lab2"},
+    )
+
+    results = []
+    for r in runs:
+        cfg = r.config
+        train_acc = r.summary.get("train/final_accuracy", r.summary.get("train/accuracy", None))
+        test_acc = r.summary.get("test/final_accuracy", r.summary.get("test/accuracy", None))
+        if train_acc is not None:
+            train_acc = float(train_acc)
+        if test_acc is not None:
+            test_acc = float(test_acc)
+
+        results.append({
+            "name": r.name,
+            "loss": cfg.get("loss", "unknown"),
+            "lr": float(cfg["lr"]) if "lr" in cfg else None,
+            "weight_decay": float(cfg["weight_decay"]) if "weight_decay" in cfg else float(cfg.get("reg", 0)),
+            "method": cfg.get("method", "unknown"),
+            "train_acc": train_acc,
+            "test_acc": test_acc,
+        })
+
+    results.sort(key=lambda x: -(x["test_acc"] or 0))
+
+    print(f"\nFound {len(results)} runs in group 'lab2'\n")
+    print(f"{'Name':<40} {'Loss':<20} {'LR':>8} {'WD':>8} {'Train':>8} {'Test':>8}")
+    print("-" * 96)
+    for r in results:
+        t = f"{r['train_acc']:.4f}" if r["train_acc"] is not None else "   N/A"
+        e = f"{r['test_acc']:.4f}" if r["test_acc"] is not None else "   N/A"
+        lr_s = f"{r['lr']}" if r["lr"] is not None else "N/A"
+        wd_s = f"{r['weight_decay']}" if r["weight_decay"] is not None else "N/A"
+        print(f"{r['name']:<40} {r['loss']:<20} {lr_s:>8} {wd_s:>8} {t:>8} {e:>8}")
+
+    run = wandb.init(project="computer-vision", group="lab2",
+                     name="summary-table", reinit=True)
+    table = wandb.Table(
+        columns=["Name", "Loss", "LR", "Weight Decay", "Method", "Train Acc", "Test Acc"])
+    for r in results:
+        table.add_data(r["name"], r["loss"], r["lr"], r["weight_decay"],
+                       r["method"], r["train_acc"], r["test_acc"])
+    wandb.log({"experiment_summary": table})
+    wandb.finish()
+    print("\nSummary table logged to wandb!")
+
+
 if __name__ == "__main__":
     cifar_root_dir = "cifar-10-batches-py"
     X_train, y_train, X_test, y_test = load_cifar10(cifar_root_dir)
@@ -171,24 +223,26 @@ if __name__ == "__main__":
     learning_rates = [1e-3, 1e-4, 1e-5]
     weight_decays = [0, 1e-3, 1e-4]
 
-    for loss_name, loss_func in loss_functions.items():
-        for lr in learning_rates:
-            for wd in weight_decays:
-                name = f"{loss_name}_lr={lr}_wd={wd}"
-                print(f"\n{'='*50}")
-                print(f"Training: {name}")
-                print(f"{'='*50}")
+    # for loss_name, loss_func in loss_functions.items():
+    #     for lr in learning_rates:
+    #         for wd in weight_decays:
+    #             name = f"{loss_name}_lr={lr}_wd={wd}"
+    #             print(f"\n{'='*50}")
+    #             print(f"Training: {name}")
+    #             print(f"{'='*50}")
 
-                wandb.init(
-                    project="computer-vision",
-                    group="lab2",
-                    name=f"softmax-pytorch-{name}",
-                    config={"loss": loss_name, "lr": lr, "weight_decay": wd,
-                            "epochs": 50, "batch_size": 64, "method": "pytorch"},
-                    reinit=True,
-                )
+    #             wandb.init(
+    #                 project="computer-vision",
+    #                 group="lab2",
+    #                 name=f"softmax-pytorch-{name}",
+    #                 config={"loss": loss_name, "lr": lr, "weight_decay": wd,
+    #                         "epochs": 50, "batch_size": 64, "method": "pytorch"},
+    #                 reinit=True,
+    #             )
 
-                train_acc, test_acc = training(X_train, y_train, X_test, y_test, loss_func, lr, wd)
+    #             train_acc, test_acc = training(X_train, y_train, X_test, y_test, loss_func, lr, wd)
 
-                wandb.log({"test/final_accuracy": test_acc, "train/final_accuracy": train_acc})
-                wandb.finish()
+    #             wandb.log({"test/final_accuracy": test_acc, "train/final_accuracy": train_acc})
+    #             wandb.finish()
+
+    build_summary_table()
