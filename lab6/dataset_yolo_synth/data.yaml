@@ -1,0 +1,6 @@
+path: /Users/ndreea/Documents/Computer-Vision/lab6/dataset_yolo_synth
+train: train/images
+val: valid/images
+test: test/images
+nc: 16
+names: {0: 'butterfly flower', 1: 'cape flower', 2: 'cyclamen', 3: 'dahlia', 4: 'daisy', 5: 'dandelion', 6: 'foxglove', 7: 'frangipani', 8: 'jasmine', 9: 'orchid', 10: 'passion flower', 11: 'petunia', 12: 'rose', 13: 'sunflower', 14: 'wallflower', 15: 'ylang-ylang'}
